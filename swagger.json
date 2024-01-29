@@ -25,6 +25,31 @@
 						}
 					}
 				}
+			},
+			"post": {
+				"tags": ["Movie"],
+				"summary": "Inserir um novo filme",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/MovieInput"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Filme cadastrado com sucesso"
+					},
+					"409": {
+						"description": "Já existe um filme cadastrado com esse título"
+					},
+					"500": {
+						"description": "Falha ao cadastrar um filme"
+					}
+				}
 			}
 		},
 		"/movies/{id}": {

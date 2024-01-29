@@ -52,7 +52,7 @@ app.post("/movies", async (req, res) => {
         return res.status(500).send({message: "Falha ao cadastrar um filme"});
     }
 
-    res.status(201).send();
+    res.status(201).send({message: "Filme cadastrado com sucesso"});
 });
 
 app.put("/movies/:id", async (req,res) => {

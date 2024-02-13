@@ -214,6 +214,25 @@
 						"description": "Falha ao tentar adicionar os dados deste gênero!"
 					}
 				}
+			},
+			"get": {
+				"tags": ["Genre"],
+				"summary": "Obter a lista de todos os gêneros",
+				"responses": {
+					"200": {
+						"description": "Retorna uma lista de gêneros",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/Genre"
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 	},
@@ -316,6 +335,19 @@
 				],
 				"properties": {					
 					"name": {
+						"type": "string",
+						"description": "Nome do gênero"
+					}
+				}
+			},
+			"Genre" :{
+				"type":"object",
+				"properties": {
+					"id":{
+						"type": "integer",
+						"description": "ID do gênero"
+					},
+					"name":{
 						"type": "string",
 						"description": "Nome do gênero"
 					}

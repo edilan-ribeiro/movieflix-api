@@ -150,6 +150,44 @@
 					}
 				}
 			}
+		},		
+		"/genres/{id}": {
+			"put": {
+				"tags": ["Genre"],
+				"summary": "Atualizar um gênero",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "ID do gênero a ser atualizado",
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/GenreInput"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Gênero atualizado com sucesso!"
+					},
+					"404": {
+						"description": "Gênero não encontrado"
+					},
+					"500": {
+						"description": "Falha ao tentar a atualizar os dados desde gênero!"
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -242,7 +280,21 @@
 						"description": "Data de lançamento do filme"
 					}
 				}
+			},
+			"GenreInput": {
+				"type":"object",
+				"required": [
+					"id",
+					"name"
+				],
+				"properties": {					
+					"name": {
+						"type": "string",
+						"description": "Nome do gênero"
+					}
+				}
 			}
 		}
+		
 	}
 }

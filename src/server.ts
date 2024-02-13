@@ -11,16 +11,21 @@ app.use(express.json());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get("/movies", async (_, res) => {
-    const movies = await prisma.movie.findMany({
-        orderBy: {
-            title: "asc",
-        },
-        include: {
-            genres: true,
-            languages: true,
-        },
-    });
-    res.json(movies);
+
+    try {
+        const movies = await prisma.movie.findMany({
+            orderBy: {
+                title: "asc",
+            },
+            include: {
+                genres: true,
+                languages: true,
+            },
+        });
+        res.json(movies);
+    } catch(error) {
+        return res.status(500).send({message: "Ocorreu um erro ao buscar os dados dos filmes"});
+    }
 });
 
 app.post("/movies", async (req, res) => {
@@ -206,6 +211,20 @@ app.post("/genres", async (req,res) => {
     }
 
     return res.status(200).send({message: "Gênero adicionado com sucesso!"});
+});
+
+app.get("/genres", async (_req,res) => {
+    try {
+        const allGenres = await prisma.genre.findMany({
+            orderBy: {
+                id: "asc"
+            }
+        });
+        res.json(allGenres);
+
+    } catch (error) {
+        return res.status(500).send({message: "Ocorreu um erro ao buscar os dados dos filmes"});
+    }
 });
 
 

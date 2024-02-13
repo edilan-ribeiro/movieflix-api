@@ -168,10 +168,44 @@ app.put("/genres/:id", async (req,res) =>{
         });
         
     } catch (error) {
-        return res.status(500).send({message: "Falha ao tentar a atualizar os dados desde gênero!"});
+        return res.status(500).send({message: "Falha ao tentar a atualizar os dados deste gênero!"});
     }
 
     return res.status(200).send({message: "Gênero atualizado com sucesso!"});
+});
+
+app.post("/genres", async (req,res) => {
+    const {name} = req.body;
+
+    if(!name) {
+        return res.status(400).send({ message: "O nome do gênero é obrigatório." });
+    }
+
+    try {
+        const genreAlreadyInDatabase = await prisma.genre.findFirst({
+            where: {
+                name: {
+                    equals: name,
+                    mode: "insensitive"
+                }
+            }
+        });
+
+        if (genreAlreadyInDatabase) {
+            return res.status(409).send({message: `O gênero ${name} já esta cadastrado na base de dados`});
+        }
+
+        await prisma.genre.create({
+            data: {
+                name: name
+            }
+        });
+
+    } catch (error) {
+        return res.status(500).send({message: "Falha ao tentar adicionar os dados deste gênero!"});
+    }
+
+    return res.status(200).send({message: "Gênero adicionado com sucesso!"});
 });
 
 

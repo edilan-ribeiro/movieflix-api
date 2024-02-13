@@ -187,6 +187,32 @@
 						"description": "Falha ao tentar a atualizar os dados desde gênero!"
 					}
 				}
+			},
+			"delete": {
+				"tags": ["Genre"],
+				"summary": "Remover um gênero",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"description": "ID do gênero a ser removido",
+						"schema": {
+							"type": "integer"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Gênero removido com sucesso"
+					},
+					"404": {
+						"description": "Gênero não encontrado"
+					},
+					"500": {
+						"description": "Falha ao remover o gênero desejado"
+					}
+				}
 			}
 		},
 		"/genres": {
@@ -220,7 +246,7 @@
 				"summary": "Obter a lista de todos os gêneros",
 				"responses": {
 					"200": {
-						"description": "Retorna uma lista de gêneros",
+						"description": "Retorna a lista de gêneros",
 						"content": {
 							"application/json": {
 								"schema": {

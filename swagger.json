@@ -188,6 +188,33 @@
 					}
 				}
 			}
+		},
+		"/genres": {
+			"post": {
+				"tags": ["Genre"],
+				"summary": "Inserir um novo gênero",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/GenreInput"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Gênero adicionado com sucesso!"
+					},
+					"409": {
+						"description": "O gênero ${name} já esta cadastrado na base de dados"
+					},
+					"500": {
+						"description": "Falha ao tentar adicionar os dados deste gênero!"
+					}
+				}
+			}
 		}
 	},
 	"components": {

@@ -13,16 +13,27 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.get("/movies", async (_, res) => {
 
     try {
-        const movies = await prisma.movie.findMany({
-            orderBy: {
-                title: "asc",
-            },
-            include: {
-                genres: true,
-                languages: true,
-            },
-        });
-        res.json(movies);
+
+        const [movies, totalMovies] = await Promise.all([
+            prisma.movie.findMany({
+                orderBy: {
+                    title: "asc",
+                },
+                include: {
+                    genres: true,
+                    languages: true,
+                },            
+            }),
+            prisma.movie.count()            
+        ]);
+
+        const moviesResponse = {            
+            totalMovies,
+            movies
+        };
+
+        res.json(moviesResponse);
+
     } catch(error) {
         return res.status(500).send({message: "Ocorreu um erro ao buscar os dados dos filmes"});
     }

@@ -37,6 +37,9 @@
 								}
 							}
 						}
+					},
+					"500": {
+						"description": "Ocorreu um erro ao buscar os dados dos filmes"
 					}
 				}
 			},
@@ -62,6 +65,49 @@
 					},
 					"500": {
 						"description": "Falha ao cadastrar um filme"
+					}
+				}
+			}
+		},
+		"/movies/sort": {
+			"get": {
+				"tags": ["Movie"],
+				"summary": "Obter filmes em determinada ordem",
+				"parameters": [
+					{
+						"in": "query",
+						"name": "sort",
+						"required": true,
+						"description": "Ordena os filmes pelos métodos disponíveis",
+						"schema": {
+							"type": "string",
+							"enum": ["duration", "release_date", "oscar_count"]
+						}
+
+					}					
+				],
+				"responses": {
+					"200": {
+						"description": "Retorna uma lista de filmes em determinada ordem",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"movies": {
+											"type": "array",
+											"items": {
+											"$ref": "#/components/schemas/Movie"
+											}
+										}
+										
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Falha ao buscar lista de filmes ordenada"
 					}
 				}
 			}

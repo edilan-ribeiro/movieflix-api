@@ -1,5 +1,5 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json";
 
@@ -46,6 +46,43 @@ app.get("/movies", async (_, res) => {
         res.json(moviesResponse);
     } catch(error) {
         return res.status(500).send({message: "Ocorreu um erro ao buscar os dados dos filmes"});
+    }
+});
+
+app.get("/movies/sort", async (req, res) => {
+
+    const { sort } = req.query;
+    let orderBy: Prisma.MovieOrderByWithRelationInput | Prisma.MovieOrderByWithRelationInput[] | undefined;
+
+    if (sort === "duration") {
+        orderBy = {
+            duration: "asc",
+        };
+    } else if (sort === "release_date") {
+        orderBy = {
+            release_date: "asc",
+        };
+    } else if (sort === "oscar_count") {
+        orderBy = {
+            oscar_count: "asc",
+        };
+    } else {
+        return res.status(404).send({message: "Tipo de ordenação não encontrado"});
+    }
+
+    try {
+        const movies = await prisma.movie.findMany({
+            orderBy,
+            include: {
+                genres: true,
+                languages: true
+            }
+        });
+
+        res.json(movies);
+
+    } catch (error) {
+        res.status(500).send({message: "Falha ao buscar lista de filmes ordenada"});
     }
 });
 

@@ -14,7 +14,7 @@ app.get("/movies", async (_, res) => {
 
     try {
 
-        const [movies, totalMovies] = await Promise.all([
+        const [movies, totalMovies, averageDurationCall] = await Promise.all([
             prisma.movie.findMany({
                 orderBy: {
                     title: "asc",
@@ -24,16 +24,26 @@ app.get("/movies", async (_, res) => {
                     languages: true,
                 },            
             }),
-            prisma.movie.count()            
+
+            prisma.movie.count(),
+
+            prisma.movie.aggregate({
+                _avg: {
+                    duration: true
+                }
+            })
         ]);
+
+        const averageDuration = averageDurationCall._avg.duration;
+
 
         const moviesResponse = {            
             totalMovies,
+            averageDuration,
             movies
         };
 
         res.json(moviesResponse);
-
     } catch(error) {
         return res.status(500).send({message: "Ocorreu um erro ao buscar os dados dos filmes"});
     }

@@ -22,6 +22,10 @@
 											"type": "integer",
 											"description": "Quantidade total de filmes"
 										},
+										"averageDuration":{
+											"type": "integer",
+											"description": "Média de duração dos filmes cadastrados"
+										},
 										"movies": {
 											"type": "array",
 											"items": {

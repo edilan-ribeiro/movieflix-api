@@ -16,9 +16,19 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "array",
-									"items": {
-										"$ref": "#/components/schemas/Movie"
+									"type": "object",
+									"properties": {
+										"totalMovies":{
+											"type": "integer",
+											"description": "Quantidade total de filmes"
+										},
+										"movies": {
+											"type": "array",
+											"items": {
+											"$ref": "#/components/schemas/Movie"
+											}
+										}
+										
 									}
 								}
 							}
@@ -317,6 +327,10 @@
 						"type": "string",
 						"format": "date",
 						"description": "Data de lançamento do filme"
+					},
+					"duration": {
+						"type": "integer",
+						"description": "Duração do filme"
 					}
 				}
 			},
@@ -350,6 +364,10 @@
 						"type": "string",
 						"format": "date",
 						"description": "Data de lançamento do filme"
+					},
+					"duration": {
+						"type": "integer",
+						"description": "Duração do filme"
 					}
 				}
 			},

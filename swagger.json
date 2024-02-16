@@ -72,69 +72,34 @@
 		"/movies/filter": {
 			"get": {
 				"tags": ["Movie"],
-				"summary": "Filtra os filmes por linguagem",
-				"parameters": [
-					{
-						"in": "query",
-						"name": "language",
-						"required": true,
-						"description": "Exibe filmes que possuem determinada linguagem",
-						"schema": {
-							"type": "string",
-							"enum": ["inglês", "português", "francês", "espanhol", "japonês"]
-						}
-
-					}					
-				],
-				"responses": {
-					"200": {
-						"description": "Retorna uma lista de que possuem determinada linguagem",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "object",
-									"properties": {
-										"movies": {
-											"type": "array",
-											"items": {
-											"$ref": "#/components/schemas/Movie"
-											}
-										}
-										
-									}
-								}
-							}
-						}
-					},
-					"404": {
-						"description": "Não há filmes com este gênero"
-					},
-					"500": {
-						"description": "Ocorreu um erro ao filtrar a lista de filmes"
-					}
-				}
-			}
-		},
-		"/movies/sort": {
-			"get": {
-				"tags": ["Movie"],
-				"summary": "Obter filmes em determinada ordem",
+				"summary": "Filtra os filmes por linguagem e pode coloca-los em determinada ordem",
 				"parameters": [
 					{
 						"in": "query",
 						"name": "sort",
 						"required": true,
-						"description": "Ordena os filmes pelos métodos disponíveis",
+						"description": "Métodos disponíveis para a ordenação dos filmes",
 						"schema": {
 							"type": "string",
-							"enum": ["duration", "release_date", "oscar_count"]
+							"enum": ["title","duration", "release_date", "oscar_count"]
 						}
 
-					}					
+					},
+					{
+						"in": "query",
+						"name": "language",
+						"required": false,
+						"description": "Idiomas disponíveis para filtragem dos filmes",
+						"schema": {
+							"type": "string",
+							"enum": ["inglês", "português", "francês", "espanhol", "japonês"]
+						}
+
+					}
 				],
 				"responses": {
 					"200": {
-						"description": "Retorna uma lista de filmes em determinada ordem",
+						"description": "Retorna uma lista de que possuem determinada linguagem e/ou ordenação",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -153,10 +118,10 @@
 						}
 					},
 					"404": {
-						"description": "Tipo de ordenação não encontrado"
+						"description": "Nenhum filme encontrado com esse critério de busca"
 					},
 					"500": {
-						"description": "Falha ao buscar lista de filmes ordenada"
+						"description": "Ocorreu um erro ao tentar acessar essa listagem de filmes"
 					}
 				}
 			}
@@ -253,6 +218,9 @@
 							}
 						}
 
+					},
+					"404": {
+						"description": "Este gênero não existe"
 					},
 					"500": {
 						"description": "Falha ao filtrar filmes por gênero"

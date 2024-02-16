@@ -10,40 +10,69 @@ const prisma = new PrismaClient();
 app.use(express.json());
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get("/movies", async (_, res) => {
+app.get("/movies", async (req, res) => {
+
+    const { language } = req.query;
 
     try {
 
-        const [movies, totalMovies, averageDurationCall] = await Promise.all([
-            prisma.movie.findMany({
-                orderBy: {
-                    title: "asc",
+        if (language) {
+            const languageFilter = await prisma.movie.findMany({
+                where: {
+                    languages: {
+                        name: {
+                            equals: language as string,
+                            mode: "insensitive"
+                        }
+
+                    }
                 },
                 include: {
-                    genres: true,
                     languages: true,
-                },            
-            }),
-
-            prisma.movie.count(),
-
-            prisma.movie.aggregate({
-                _avg: {
-                    duration: true
+                    genres: true
                 }
-            })
-        ]);
+            });
 
-        const averageDuration = averageDurationCall._avg.duration;
+            if (languageFilter.length === 0) {
+                return res.status(404).send({message: "Não há filmes com este gênero"});
+            } else {
+                return res.json(languageFilter);
+            }
+            
+        } else {
+            const [movies, totalMovies, averageDurationCall] = await Promise.all([
+                prisma.movie.findMany({
+                    orderBy: {
+                        title: "asc",
+                    },
+                    include: {
+                        genres: true,
+                        languages: true,
+                    },            
+                }),
+    
+                prisma.movie.count(),
+    
+                prisma.movie.aggregate({
+                    _avg: {
+                        duration: true
+                    }
+                })
+            ]);
+    
+            const averageDuration = averageDurationCall._avg.duration;
+    
+    
+            const moviesResponse = {            
+                totalMovies,
+                averageDuration,
+                movies
+            };
+    
+            res.json(moviesResponse);
+        }
 
-
-        const moviesResponse = {            
-            totalMovies,
-            averageDuration,
-            movies
-        };
-
-        res.json(moviesResponse);
+        
     } catch(error) {
         return res.status(500).send({message: "Ocorreu um erro ao buscar os dados dos filmes"});
     }

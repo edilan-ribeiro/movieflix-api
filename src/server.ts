@@ -1,5 +1,5 @@
 import express from "express";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../swagger.json";
 
@@ -53,74 +53,64 @@ app.get("/movies", async (_, res) => {
 });
 
 app.get("/movies/filter", async (req,res) => {
-    const { language } = req.query;
+    const { language, sort } = req.query;
 
-    try {
-        if (language) {
-            const languageFilter = await prisma.movie.findMany({
-                where: {
-                    languages: {
-                        name: {
-                            equals: language as string,
-                            mode: "insensitive"
-                        }
 
-                    }
-                },
-                include: {
-                    languages: true,
-                    genres: true
-                }
-            });
+    const languageName = language as string;
+    const sortMovie = sort as string;
 
-            if (languageFilter.length === 0) {
-                return res.status(404).send({message: "Não há filmes com este gênero"});
-            } else {
-                return res.json(languageFilter);
-            }
-            
-        }
-    } catch (error) {
-        return res.status(500).send({message: "Ocorreu um erro ao filtrar a lista de filmes"});
-    }
-});
-
-app.get("/movies/sort", async (req, res) => {
-
-    const { sort } = req.query;
-    let orderBy: Prisma.MovieOrderByWithRelationInput | Prisma.MovieOrderByWithRelationInput[] | undefined;
-
-    if (sort === "duration") {
+    let orderBy = {};
+    if (sortMovie === "duration") {
         orderBy = {
             duration: "asc",
         };
-    } else if (sort === "release_date") {
+    } else if (sortMovie === "release_date") {
         orderBy = {
             release_date: "asc",
         };
-    } else if (sort === "oscar_count") {
+    } else if (sortMovie === "oscar_count") {
         orderBy = {
             oscar_count: "asc",
         };
-    } else {
-        return res.status(404).send({message: "Tipo de ordenação não encontrado"});
+    } else if (sortMovie === "title") {
+        orderBy = {
+            title: "asc",
+        };
     }
+
+    let where = {};
+    if (languageName) {
+        where = {
+            languages: {
+                name: {
+                    equals: languageName,
+                    mode: "insensitive",
+                },
+            },
+        };
+    }
+    
 
     try {
         const movies = await prisma.movie.findMany({
             orderBy,
+            where: where,
             include: {
                 genres: true,
-                languages: true
-            }
+                languages: true,
+            },
         });
 
-        res.json(movies);
+        if (movies.length ===  0) {
+            return res.status(404).send({ message: "Nenhum filme encontrado com esse critério de busca" });
+        }
 
+        res.json(movies);
     } catch (error) {
-        res.status(500).send({message: "Falha ao buscar lista de filmes ordenada"});
+        return res.status(500).send({message: "Ocorreu um erro ao tentar acessar essa listagem de filmes"});
     }
 });
+
 
 app.post("/movies", async (req, res) => {
 
@@ -219,6 +209,19 @@ app.get("/movies/:genreName", async (req, res) => {
     const genreName = req.params.genreName;    
 
     try{
+        const genreExists = await prisma.genre.findFirst({
+            where: {
+                name: {
+                    equals: genreName,
+                    mode: "insensitive"
+                }
+            }
+        });
+
+        if (!genreExists) {
+            return res.status(404).send({message: "Este gênero não existe"});
+        }
+        
         const moviesFilteredByGenreName = await prisma.movie.findMany( {
             include: {
                 genres: true,

@@ -69,6 +69,52 @@
 				}
 			}
 		},
+		"/movies/filter": {
+			"get": {
+				"tags": ["Movie"],
+				"summary": "Filtra os filmes por linguagem",
+				"parameters": [
+					{
+						"in": "query",
+						"name": "language",
+						"required": true,
+						"description": "Exibe filmes que possuem determinada linguagem",
+						"schema": {
+							"type": "string",
+							"enum": ["inglês", "português", "francês", "espanhol", "japonês"]
+						}
+
+					}					
+				],
+				"responses": {
+					"200": {
+						"description": "Retorna uma lista de que possuem determinada linguagem",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"movies": {
+											"type": "array",
+											"items": {
+											"$ref": "#/components/schemas/Movie"
+											}
+										}
+										
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Não há filmes com este gênero"
+					},
+					"500": {
+						"description": "Ocorreu um erro ao filtrar a lista de filmes"
+					}
+				}
+			}
+		},
 		"/movies/sort": {
 			"get": {
 				"tags": ["Movie"],
@@ -105,6 +151,9 @@
 								}
 							}
 						}
+					},
+					"404": {
+						"description": "Tipo de ordenação não encontrado"
 					},
 					"500": {
 						"description": "Falha ao buscar lista de filmes ordenada"

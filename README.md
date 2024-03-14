@@ -70,7 +70,7 @@ Ela define como os dados devem ser enviados e recebidos, quais são os formatos 
 
 <div align="center">
 
-![NodeJS](https://img.shields.io/badge/node.js-20232a.svg?style=for-the-badge&logo=node.js&logoColor=%237CFC00)
+![Node.js](https://img.shields.io/badge/node.js-20232a.svg?style=for-the-badge&logo=node.js&logoColor=%237CFC00)
 ![Express](https://img.shields.io/badge/express-20232a.svg?style=for-the-badge&logo=express&logoColor=white)
 ![Typescript](https://img.shields.io/badge/typescript-20232a.svg?style=for-the-badge&logo=typescript)
 ![PostgreSQL](https://img.shields.io/badge/postgres-20232a.svg?style=for-the-badge&logo=postgresql&logoColor=white)

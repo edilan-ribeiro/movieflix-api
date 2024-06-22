@@ -2,8 +2,13 @@
 
 <div align="center">
 
-[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/edilan-ribeiro/movieflix-api/blob/main/README.md) 
-[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/edilan-ribeiro/movieflix-api/blob/main/README.en.md)<br>
+  <a href="https://github.com/edilan-ribeiro/movieflix-api/blob/main/README.md">
+    <img src="https://img.shields.io/badge/lang-pt--br-green.svg" alt="pt-br language"></a>
+  <a href="https://github.com/edilan-ribeiro/movieflix-api/blob/main/README.en.md">
+    <img src="https://img.shields.io/badge/lang-en-red.svg" alt="english language ">
+  </a>
+  
+  <br>
 <img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
 
 </div>
@@ -65,7 +70,7 @@ Ela define como os dados devem ser enviados e recebidos, quais são os formatos 
 
 <div align="center">
 
-![NodeJS](https://img.shields.io/badge/node.js-20232a.svg?style=for-the-badge&logo=node.js&logoColor=%237CFC00)
+![Node.js](https://img.shields.io/badge/node.js-20232a.svg?style=for-the-badge&logo=node.js&logoColor=%237CFC00)
 ![Express](https://img.shields.io/badge/express-20232a.svg?style=for-the-badge&logo=express&logoColor=white)
 ![Typescript](https://img.shields.io/badge/typescript-20232a.svg?style=for-the-badge&logo=typescript)
 ![PostgreSQL](https://img.shields.io/badge/postgres-20232a.svg?style=for-the-badge&logo=postgresql&logoColor=white)
